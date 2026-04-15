@@ -691,6 +691,7 @@ class UncertaintyCalculations(ParameterBase):
         logger = get_logger(self)
 
         U_hat = {}
+        approx = {}
         # Calculate PC for each feature
         for feature in tqdm(data,
                             desc="Calculating PC for each feature",
