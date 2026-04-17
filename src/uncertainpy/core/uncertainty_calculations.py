@@ -152,7 +152,16 @@ class UncertaintyCalculations(ParameterBase):
             add_total = [False] * dim
             add_main = [True] * dim
 
-            for term in pol.exponents:
+            exponents = np.asarray(pol.exponents, dtype=int)
+
+            # Newer chaospy/numpoly versions can expose single-polynomial
+            # exponents in transposed form. Normalize to (n_terms, dim).
+            if exponents.ndim == 1:
+                exponents = exponents.reshape(1, -1)
+            elif exponents.shape[0] == dim and exponents.shape[1] != dim:
+                exponents = exponents.T
+
+            for term in exponents:
                 for var in range(dim):
                     if term[var] > 0:
                         add_total[var] = True
